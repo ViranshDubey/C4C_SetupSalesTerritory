@@ -1,0 +1,2 @@
+@RD /S /Q "./results"
+npm i & npm config set registry=https://int.repositories.cloud.sap/artifactory/api/npm/build-milestones-npm/ & npm install qmate@latest & qmate update-chromedriver & qmate Config.js
