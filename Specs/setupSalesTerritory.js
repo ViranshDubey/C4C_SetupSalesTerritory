@@ -22,8 +22,8 @@ describe("Service Category Creation", async function () {
 
     let counter = 1;
     it(`Step ${ counter++ }: navigate to SAP C4C app`, async function () {
-        await common.navigation.navigateToUrl(this.credData[0].Tenant);
-        await ui5.session.loginFiori(this.credData[0].Username, this.credData[0].Password);
+        await common.navigation.navigateToUrl(credData[0].Tenant);
+        await ui5.session.loginFiori(credData[0].Username, credData[0].Password);
         util.browser.sleep(3000);
     });
 
@@ -57,14 +57,10 @@ describe("Service Category Creation", async function () {
         await ui5.userInteraction.click(selector);
     });
 
-    // Test code
+    // Data processing started...
     for (let i = 0; i < xlData.length; i++) {
-        util.console.warn("Data:" + xlData);
-    }
 
-    it(`Step ${counter++}: Start of Processing`, async function () {
-        for (let i = 0; i < xlData.length; i++) {
-            //it("Step 06: Click New", async function () {
+        it(`Step ${counter++}: Click New`, async function () {
             const selectorNew = {
                 "elementProperties": {
                     "metadata": "sap.client.m.core.base.Button",
@@ -72,9 +68,9 @@ describe("Service Category Creation", async function () {
                 }
             };
             await ui5.userInteraction.click(selectorNew);
-            //});
+        });
 
-            //it("Step 07: Click New Territory", async function () {
+        it(`Step ${counter++}: Click New Territory`, async function () {
             const selectorOrgUnit = {
                 "elementProperties": {
                     "metadata": "sap.m.Button",
@@ -82,9 +78,9 @@ describe("Service Category Creation", async function () {
                 }
             };
             await ui5.userInteraction.click(selectorOrgUnit);
-            //});
+        });
 
-            //it('Step', async function() {
+        it(`Step ${counter++}: Fill Name = ${xlData[i][0]}`, async function () {
             if (xlData[i][0]) {
                 const selectorName = {
                     "elementProperties": {
@@ -100,24 +96,24 @@ describe("Service Category Creation", async function () {
                 let valueToEnter = xlData[i][0];
                 await ui5.userInteraction.clearAndFill(selectorName, valueToEnter);
             }
-            //});
+        });
 
-            /* if (xlData[i][1]) {
-                 const selectorValidTo = {
-                     "elementProperties": {
-                         "metadata": "sap.client.m.core.DateTimeInputFieldWrapper.DatePickerField",
-                         "mProperties": {
-                             "value": [{
-                                 "path": "/Root/HierarchyLevelCode"
-                             }]
-                         }
+        /* if (xlData[i][1]) {
+             const selectorValidTo = {
+                 "elementProperties": {
+                     "metadata": "sap.client.m.core.DateTimeInputFieldWrapper.DatePickerField",
+                     "mProperties": {
+                         "value": [{
+                             "path": "/Root/HierarchyLevelCode"
+                         }]
                      }
-                 };
-                 valueToEnter = xlData[i][1];
-                 await ui5.userInteraction.clearAndFill(selectorValidTo, valueToEnter);
-             }*/
+                 }
+             };
+             valueToEnter = xlData[i][1];
+             await ui5.userInteraction.clearAndFill(selectorValidTo, valueToEnter);
+         }*/
 
-            //it('Step', async function() {
+        it(`Step ${counter++}: Open F4Help`, async function () {
             if (xlData[i][2]) {
 
                 // F4 Help
@@ -133,51 +129,55 @@ describe("Service Category Creation", async function () {
                     }
                 };
                 await ui5.userInteraction.openF4Help(selectorID, 0, 30000, false);
+            }
+        });
 
+        it(`Step ${counter++}: Open Advance filter`, async function () {
+            // Filter 
+            const selectorFilter = {
+                "elementProperties": {
+                    "metadata": "sap.ui.core.Icon",
+                    "src": "sap-icon://filter"
+                }
+            };
+            await ui5.userInteraction.click(selectorFilter);
+        });
 
-                // Filter 
-                const selectorFilter = {
-                    "elementProperties": {
-                        "metadata": "sap.ui.core.Icon",
-                        "src": "sap-icon://filter"
-                    }
-                };
-                await ui5.userInteraction.click(selectorFilter);
-
-                // Fill search value
-                const selectorSearchParametersName = {
-                    "elementProperties": {
-                        "metadata": "sap.client.m.core.InputFieldWrapper.InputField",
-                        "mProperties": {
-                            "type": "Text",
-                            "value": [{
-                                "path": "/Root/SearchParameters/Name"
-                            }]
-                        }
-                    }
-                };
-                valueToEnter = xlData[i][2];
-                await ui5.userInteraction.clearAndFill(selectorSearchParametersName, valueToEnter);
-
-
-                // Hit enter to start search
-                await common.userInteraction.pressEnter();
-
-                // Value selection
-                const selectorF4Value = {
-                    "elementProperties": {
-                        "metadata": "sap.client.m.core.base.Text",
-                        "bindingContextPath": "/Root/Items/0",
-                        "text": [{
-                            "path": "./ID"
+        it(`Step ${counter++}: Enter search value = ${xlData[i][2]}`, async function () {
+            // Fill search value
+            const selectorSearchParametersName = {
+                "elementProperties": {
+                    "metadata": "sap.client.m.core.InputFieldWrapper.InputField",
+                    "mProperties": {
+                        "type": "Text",
+                        "value": [{
+                            "path": "/Root/SearchParameters/Name"
                         }]
                     }
-                };
-                await ui5.userInteraction.click(selectorF4Value);
-            }
-            //});
+                }
+            };
+            valueToEnter = xlData[i][2];
+            await ui5.userInteraction.clearAndFill(selectorSearchParametersName, valueToEnter);
 
-            //it('Step', async function() {
+            // Hit enter to start search
+            await common.userInteraction.pressEnter();
+        });
+
+        it(`Step ${counter++}: Select value`, async function () {
+            // Value selection
+            const selectorF4Value = {
+                "elementProperties": {
+                    "metadata": "sap.client.m.core.base.Text",
+                    "bindingContextPath": "/Root/Items/0",
+                    "text": [{
+                        "path": "./ID"
+                    }]
+                }
+            };
+            await ui5.userInteraction.click(selectorF4Value);
+        });
+
+        it(`Step ${counter++}: Enter owner value = ${xlData[i][3]}`, async function () {
             if (xlData[i][3]) {
                 const selectorOwnerID = {
                     "elementProperties": {
@@ -192,9 +192,10 @@ describe("Service Category Creation", async function () {
                 valueToEnter = xlData[i][3];
                 await ui5.userInteraction.clearAndFill(selectorOwnerID, valueToEnter);
             }
+        });
 
 
-            //it("Step 15.a: Save", async function () {
+        it(`Step ${counter++}: Save`, async function () {
             const selectorSave = {
                 "elementProperties": {
                     "metadata": "sap.client.m.core.base.Button",
@@ -203,13 +204,12 @@ describe("Service Category Creation", async function () {
             };
             await ui5.userInteraction.click(selectorSave);
             util.browser.sleep(10000);
-            //});
+        });
 
-            /*} catch (err) {
-                console.log("Internal error!");
-            }*/
-        } // End of outer FOR loop
-    });
+        /*} catch (err) {
+            console.log("Internal error!");
+        }*/
+    } // Outer FOR loop end
 
     it(`Step ${counter++}: Prepare sign out`, async function () {
         const selector = {
