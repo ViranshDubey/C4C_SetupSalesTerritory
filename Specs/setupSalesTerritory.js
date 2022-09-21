@@ -1,85 +1,28 @@
 const path = require("path");
 describe("Service Category Creation", async function () {
 
-    /*******************READ EXCEL***********************/
-    // Requiring the module
-    const xlsxFile = require('read-excel-file/node');
-    let xlDataTmp = [];
-    let xlData = [];
+    /*******************READ EXCEL - START***********************/
+    // Read input excel file data
+    let xlData = [],
+        credData = [];
+    let fileReader = require("./readExcel.js");
+    xlData = fileReader.xlData;
 
-    // Include fs module
-    const fs = require('fs');
-    if (fs.readdirSync('../input').length > 1) {
-        util.console.error("Error: More than one file, please keep one file");
+    if (!xlData) {
+        util.console.error("Error: No data found");
         return
-    } else {
-        var file = fs.readdirSync('../input')[0];
-
-        if (file == undefined) {
-            util.console.error("Error: Input file not found");
-            return
-        }
-
-        file = "../input/" + file;
-
     }
 
-    //xlsxFile('./CX Service Cloud Design Service.xlsx', {
-    xlsxFile(file, {
-        sheet: 'Territory Setup '
-    }).then((rows) => {
-
-        for (let index = 0; index < rows.length; index++) {
-            if (rows[index][0] == 'Path: Administrator -> Sales and Campaign Setting -> Sales Territories->Territories') {
-                xlData = buildData(index, rows.length);
-                console.log(xlData);
-                break;
-            }
-
-        }
-        // Read all the data from input excel file
-        function buildData(index, length) {
-            for (let i = index + 2; i < length; i++) {
-                if (rows[i][0] == null) {
-                    break;
-                } // Next block of data started
-                if (rows[i][2] != null) {
-                    xlDataTmp.push(rows[i]);
-                }
-            }
-            return xlDataTmp;
-        }
-        return xlData;
-    });
-    /******************************************/
+    credData = fileReader.cred;
+    if (!credData) {
+        util.console.error("Error: Credentials are missing!");
+        return
+    }
+    /******************READ EXCEL - END************************/
 
     let counter = 1;
     it(`Step ${ counter++ }: navigate to SAP C4C app`, async function () {
-        //const cred = require("../data/loginCredentials.json");
-
-        //Read credentials 
-        this.credData = [];
-        // Requiring the module
-        const reader = require('xlsx');
-        const credentials = reader.readFile('../credentials.xlsx');
-        const crSheet = credentials.SheetNames;
-        for (let j = 0; j < crSheet.length; j++) {
-
-            const tempCred = reader.utils.sheet_to_json(credentials.Sheets[credentials.SheetNames[j]]);
-            tempCred.forEach((res) => {
-                switch (crSheet[j]) {
-                    case 'Credentials':
-                        this.credData.push(res);
-                        break;
-                    default:
-                        break;
-                }
-            });
-        }
-
-        //await common.navigation.navigateToUrl(cred.loginCredentials.URL);
         await common.navigation.navigateToUrl(this.credData[0].Tenant);
-        //await ui5.session.loginFiori(cred.loginCredentials.Username, cred.loginCredentials.Password);
         await ui5.session.loginFiori(this.credData[0].Username, this.credData[0].Password);
         util.browser.sleep(3000);
     });
@@ -91,7 +34,6 @@ describe("Service Category Creation", async function () {
                 "text": "Administrator"
             }
         };
-        //await ui5.userInteraction.click(selector);
         await ui5.userInteraction.click(selector);
     });
 
@@ -114,6 +56,11 @@ describe("Service Category Creation", async function () {
         };
         await ui5.userInteraction.click(selector);
     });
+
+    // Test code
+    for (let i = 0; i < xlData.length; i++) {
+        util.console.warn("Data:" + xlData);
+    }
 
     it(`Step ${counter++}: Start of Processing`, async function () {
         for (let i = 0; i < xlData.length; i++) {
