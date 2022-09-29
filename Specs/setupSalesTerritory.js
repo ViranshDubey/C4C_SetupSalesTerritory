@@ -98,20 +98,24 @@ describe("Service Category Creation", async function () {
             }
         });
 
-        /* if (xlData[i][1]) {
-             const selectorValidTo = {
-                 "elementProperties": {
-                     "metadata": "sap.client.m.core.DateTimeInputFieldWrapper.DatePickerField",
-                     "mProperties": {
-                         "value": [{
-                             "path": "/Root/HierarchyLevelCode"
-                         }]
-                     }
-                 }
-             };
-             valueToEnter = xlData[i][1];
-             await ui5.userInteraction.clearAndFill(selectorValidTo, valueToEnter);
-         }*/
+        /* Filed is non-editable at screen hence commented below code
+        it(`Step ${counter++}: Territory Level = ${xlData[i][1]}`, async function () {
+            if (xlData[i][1]) {
+                const selectorValidTo = {
+                    "elementProperties": {
+                        "metadata": "sap.client.m.core.DateTimeInputFieldWrapper.DatePickerField",
+                        "mProperties": {
+                            "value": [{
+                                "path": "/Root/HierarchyLevelCode"
+                            }]
+                        }
+                    }
+                };
+                valueToEnter = xlData[i][1];
+                await ui5.userInteraction.clearAndFill(selectorValidTo, valueToEnter);
+            }
+        })
+        */
 
         it(`Step ${counter++}: Open F4Help`, async function () {
             if (xlData[i][2]) {
