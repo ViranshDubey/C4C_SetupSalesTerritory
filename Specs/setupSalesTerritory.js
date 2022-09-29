@@ -21,7 +21,7 @@ describe("Service Category Creation", async function () {
     /******************READ EXCEL - END************************/
 
     let counter = 1;
-    it(`Step ${ counter++ }: navigate to SAP C4C app`, async function () {
+    it(`Step ${ counter++ }: Navigate to SAP C4C app`, async function () {
         await common.navigation.navigateToUrl(credData[0].Tenant);
         await ui5.session.loginFiori(credData[0].Username, credData[0].Password);
         util.browser.sleep(3000);
@@ -98,7 +98,7 @@ describe("Service Category Creation", async function () {
             }
         });
 
-        /* Filed is non-editable at screen hence commented below code
+        /* Field is non-editable at screen hence commented below code
         it(`Step ${counter++}: Territory Level = ${xlData[i][1]}`, async function () {
             if (xlData[i][1]) {
                 const selectorValidTo = {
